@@ -49,7 +49,8 @@ export default defineNuxtConfig({
       SUPABASE_URL: process.env.SUPABASE_URL,
     },
   },
-})```
+})
+```
 
 That's it! You can now use nuxt-required-envin your Nuxt app ✨
 
