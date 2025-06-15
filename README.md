@@ -7,18 +7,14 @@ Find and replace all on all files (CMD+SHIFT+F):
 - Description: nuxt-required-env
 -->
 
-# My Module
+# nuxt-required-env
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-My new Nuxt module for doing amazing things.
-
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/my-module?file=playground%2Fapp.vue) -->
-<!-- - [📖 &nbsp;Documentation](https://example.com) -->
+Ensure that all required environment variables exist.
 
 ## Features
 
