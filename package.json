@@ -2,7 +2,10 @@
   "name": "nuxt-required-env",
   "version": "1.0.0",
   "description": "Ensure that all required environment variables exist.",
-  "repository": "your-org/my-module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/criting/nuxt-required-env.git"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
