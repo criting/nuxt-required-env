@@ -1,6 +1,6 @@
 {
   "name": "nuxt-required-env",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Ensure that all required environment variables exist.",
   "repository": {
     "type": "git",

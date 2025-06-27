@@ -1,6 +1,10 @@
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+import { existsSync } from 'node:fs'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
-import { z, ZodType } from 'zod'
-import { existsSync } from 'fs'
+import { z, type ZodType, type ZodRawShape } from 'zod'
+
+const moduleDir = dirname(fileURLToPath(import.meta.url))
 
 export interface ModuleOptions {
   schemaPath?: string
@@ -19,6 +23,11 @@ export default defineNuxtModule<ModuleOptions>({
     const resolvedPath = resolver.resolve(options.schemaPath || 'env-schema')
 
     nuxt.hook('ready', async () => {
+      if (nuxt.options.rootDir === moduleDir) {
+        console.info('[nuxt-required-env] Skipping schema validation within module development environment.')
+        return
+      }
+      
       const schemaFileExists = existsSync(resolvedPath + '.ts') || existsSync(resolvedPath + '.js')
 
       if (!schemaFileExists) {
@@ -27,11 +36,12 @@ export default defineNuxtModule<ModuleOptions>({
         process.exit(1)
       }
 
-      let schemaModule: { EnvSchema: ZodType<any> }
+      let schemaModule: { EnvSchema: ZodType<ZodRawShape> }
 
       try {
         schemaModule = await import(resolvedPath)
-      } catch (error) {
+      }
+      catch (error) {
         console.error('\n❌ Failed to import your schema file.')
         console.error(error)
         process.exit(1)
@@ -45,17 +55,19 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       // Validate environment variables using schema
-      let parsedEnv: Record<string, any>
+      let parsedEnv: Record<string, unknown>
       try {
         parsedEnv = EnvSchema.parse(process.env)
         console.info('✅ All required environment variables are valid (schema).')
-      } catch (error) {
+      }
+      catch (error) {
         if (error instanceof z.ZodError) {
           console.error('\n❌ Invalid environment variables:')
-          error.errors.forEach(e => {
+          error.errors.forEach((e) => {
             console.error(`  • ${e.path.join('.')}: ${e.message}`)
           })
-        } else {
+        }
+        else {
           console.error(error)
         }
         console.error('\n💥 Please fix your environment and restart Nuxt.\n')
@@ -79,7 +91,8 @@ export default defineNuxtModule<ModuleOptions>({
         missingFromRuntimeConfig.forEach(key => console.error(`  • ${key}`))
         console.error('\n💥 Please ensure these keys are exposed via `runtimeConfig` in your nuxt.config.ts.\n')
         process.exit(1)
-      } else {
+      }
+      else {
         console.info('✅ All required variables are exposed in runtimeConfig.')
       }
     })
