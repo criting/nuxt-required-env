@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs'
+import { pathToFileURL } from 'node:url'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { z, type ZodType, type ZodRawShape } from 'zod'
 
@@ -35,7 +36,7 @@ export default defineNuxtModule<ModuleOptions>({
       let schemaModule: { EnvSchema: ZodType<ZodRawShape> }
 
       try {
-        schemaModule = await import(resolvedPath)
+        schemaModule = await import(pathToFileURL(resolvedPath).href)
       }
       catch (error) {
         console.error('\n❌ Failed to import your schema file.')
