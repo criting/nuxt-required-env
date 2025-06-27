@@ -1,10 +1,6 @@
-import { fileURLToPath } from 'node:url'
-import { dirname } from 'node:path'
 import { existsSync } from 'node:fs'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { z, type ZodType, type ZodRawShape } from 'zod'
-
-const moduleDir = dirname(fileURLToPath(import.meta.url))
 
 export interface ModuleOptions {
   schemaPath?: string
@@ -23,11 +19,11 @@ export default defineNuxtModule<ModuleOptions>({
     const resolvedPath = resolver.resolve(options.schemaPath || 'env-schema')
 
     nuxt.hook('ready', async () => {
-      if (nuxt.options.rootDir === moduleDir) {
-        console.info('[nuxt-required-env] Skipping schema validation within module development environment.')
+      if (process.env.SKIP_REQUIRED_ENV) {
+        console.info('[nuxt-required-env] Skipping schema validation (SKIP_REQUIRED_ENV set).')
         return
       }
-      
+
       const schemaFileExists = existsSync(resolvedPath + '.ts') || existsSync(resolvedPath + '.js')
 
       if (!schemaFileExists) {

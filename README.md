@@ -23,7 +23,6 @@ Ensure that all required environment variables exist.
 - 🔒 Fails fast in dev or build if any are missing
 - ⚙️ Checks both .env and runtimeConfig
 - 🛠 Improves deployment safety and DX
-- 📦 Zero dependencies
 
 ## Quick Setup
 

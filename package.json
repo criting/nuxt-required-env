@@ -26,10 +26,10 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build",
-    "dev": "npm run dev:prepare && nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "prepack": "SKIP_REQUIRED_ENV=1 nuxt-module-build build",
+    "dev": "SKIP_REQUIRED_ENV=1 npm run dev:prepare && nuxi dev playground",
+    "dev:build": "SKIP_REQUIRED_ENV=1 nuxi build playground",
+    "dev:prepare": "SKIP_REQUIRED_ENV=1 nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
@@ -52,5 +52,8 @@
     "typescript": "~5.8.3",
     "vitest": "^3.2.3",
     "vue-tsc": "^2.2.10"
+  },
+  "peerDependencies": {
+    "zod": "^3.0.0"
   }
 }
