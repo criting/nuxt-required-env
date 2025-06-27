@@ -19,7 +19,7 @@ export default defineNuxtModule<ModuleOptions>({
     const resolvedPath = resolver.resolve(options.schemaPath || 'env-schema')
 
     nuxt.hook('ready', async () => {
-      if (process.env.SKIP_REQUIRED_ENV) {
+      if (process.env.npm_package_name === 'nuxt-required-env') {
         console.info('[nuxt-required-env] Skipping schema validation (SKIP_REQUIRED_ENV set).')
         return
       }
