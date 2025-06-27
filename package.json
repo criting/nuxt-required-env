@@ -1,6 +1,6 @@
 {
   "name": "nuxt-required-env",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Ensure that all required environment variables exist.",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "dev": "SKIP_REQUIRED_ENV=1 npm run dev:prepare && nuxi dev playground",
     "dev:build": "SKIP_REQUIRED_ENV=1 nuxi build playground",
     "dev:prepare": "SKIP_REQUIRED_ENV=1 nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "release": "SKIP_REQUIRED_ENV=1 npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch",
