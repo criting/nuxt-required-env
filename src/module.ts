@@ -1,6 +1,7 @@
-import { existsSync } from 'node:fs'
-import { pathToFileURL } from 'node:url'
 import { defineNuxtModule, createResolver } from '@nuxt/kit'
+import { existsSync } from 'node:fs'
+import { extname } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { z, type ZodType, type ZodRawShape } from 'zod'
 
 export interface ModuleOptions {
@@ -25,18 +26,27 @@ export default defineNuxtModule<ModuleOptions>({
         return
       }
 
-      const schemaFileExists = existsSync(resolvedPath + '.ts') || existsSync(resolvedPath + '.js')
+      let resolvedFilePath = resolvedPath
 
-      if (!schemaFileExists) {
-        console.error(`\n❌ No schema file found at '${options.schemaPath}.ts'.`)
-        console.error('💡 Please create your schema file or update `schemaPath` in nuxt.config.ts.\n')
-        process.exit(1)
+      if (!extname(resolvedPath)) {
+        const tsPath = resolvedPath + '.ts'
+        const jsPath = resolvedPath + '.js'
+
+        if (existsSync(tsPath)) {
+          resolvedFilePath = tsPath
+        } else if (existsSync(jsPath)) {
+          resolvedFilePath = jsPath
+        } else {
+          console.error(`\n❌ No schema file found at '${options.schemaPath}.ts' or '.js'.`)
+          console.error('💡 Please create your schema file or update schemaPath in nuxt.config.ts.\n')
+          process.exit(1)
+        }
       }
 
       let schemaModule: { EnvSchema: ZodType<ZodRawShape> }
 
       try {
-        schemaModule = await import(pathToFileURL(resolvedPath).href)
+        schemaModule = await import(pathToFileURL(resolvedFilePath).href)
       }
       catch (error) {
         console.error('\n❌ Failed to import your schema file.')
