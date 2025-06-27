@@ -1,7 +1,7 @@
-import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { existsSync } from 'node:fs'
 import { extname } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { defineNuxtModule, createResolver } from '@nuxt/kit'
 import { z, type ZodType, type ZodRawShape } from 'zod'
 
 export interface ModuleOptions {
@@ -34,9 +34,11 @@ export default defineNuxtModule<ModuleOptions>({
 
         if (existsSync(tsPath)) {
           resolvedFilePath = tsPath
-        } else if (existsSync(jsPath)) {
+        }
+        else if (existsSync(jsPath)) {
           resolvedFilePath = jsPath
-        } else {
+        }
+        else {
           console.error(`\n❌ No schema file found at '${options.schemaPath}.ts' or '.js'.`)
           console.error('💡 Please create your schema file or update schemaPath in nuxt.config.ts.\n')
           process.exit(1)
