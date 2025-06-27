@@ -5,10 +5,8 @@ export default defineNuxtConfig(
     runtimeConfig: {
       STRIPE_KEY: process.env.STRIPE_KEY,
       public: {
+        NUXT_PUBLIC_SITE_URL: process.env.NUXT_PUBLIC_SITE_URL,
         SUPABASE_URL: process.env.SUPABASE_URL,
       },
-    },
-    requiredEnv: {
-      env: ['STRIPE_KEY', 'SUPABASE_URL', 'MY_SECRET'],
     },
   })

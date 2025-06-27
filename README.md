@@ -32,22 +32,27 @@ Install the module to your Nuxt application with one command:
 ```bash
 npx nuxi module add nuxt-required-env
 ```
+Create a file called env-schema.ts in your project root:
+```
+import { z } from 'zod'
 
+export const EnvSchema = z.object({
+  NUXT_PUBLIC_SITE_URL: z.string().url(),
+  STRIPE_KEY: z.string(),
+  SUPABASE_URL: z.string().url(),
+  MY_SECRET: z.string().min(10),
+})
+```
+
+If your schema is in a different path, set it via module options:
 ```
 export default defineNuxtConfig({
   modules: ['nuxt-required-env'],
   requiredEnv: {
-    env: ['STRIPE_KEY', 'SUPABASE_URL', 'MY_SECRET'],
-  },
-  runtimeConfig: {
-    STRIPE_KEY: process.env.STRIPE_KEY,
-    public: {
-      SUPABASE_URL: process.env.SUPABASE_URL,
-    },
+    schemaPath: 'config/env-schema', // path relative to project root, without extension
   },
 })
 ```
-
 That's it! You can now use nuxt-required-envin your Nuxt app ✨
 
 
